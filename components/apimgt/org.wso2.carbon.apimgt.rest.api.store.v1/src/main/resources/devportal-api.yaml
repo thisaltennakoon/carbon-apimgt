@@ -860,7 +860,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ParentCommentList'
+                $ref: '#/components/schemas/CommentList'
         401:
           $ref: '#/components/responses/Unauthorized'
         406:
@@ -886,7 +886,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ChildComment'
+              $ref: '#/components/schemas/Comment'
         required: true
       responses:
         201:
@@ -908,7 +908,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChildComment'
+                $ref: '#/components/schemas/Comment'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -962,7 +962,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChildCommentList'
+                $ref: '#/components/schemas/Comment'
         304:
           description: |
             Not Modified.
@@ -998,7 +998,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ChildComment'
+              $ref: '#/components/schemas/Comment'
         required: true
       responses:
         200:
@@ -1019,7 +1019,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChildComment'
+                $ref: '#/components/schemas/Comment'
         400:
           $ref: '#/components/responses/BadRequest'
         401:
@@ -1106,7 +1106,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ChildCommentList'
+                $ref: '#/components/schemas/CommentList'
         304:
           description: |
             Not Modified.
@@ -4325,6 +4325,13 @@ components:
           type: string
           readOnly: true
           example: admin
+        updatedTime:
+          type: string
+          readOnly: true
+        updatedBy:
+          type: string
+          readOnly: true
+          example: admin
         category:
           type: string
         parentCommentId:
@@ -4333,6 +4340,8 @@ components:
           type: string
         commenterInfo:
           $ref: '#/components/schemas/CommenterInfo'
+        replies:
+          $ref: '#/components/schemas/CommentList'
     CommentList:
       title: Comments List
       type: object
