@@ -874,6 +874,7 @@ paths:
       operationId: addCommentToAPI
       parameters:
       - $ref: '#/components/parameters/apiId'
+      #- $ref: '#/components/parameters/parentCommentID'
       requestBody:
         description: |
           Comment object that should to be added
@@ -5444,6 +5445,14 @@ components:
             moreInfo: ""
             error: []
   parameters:
+    parentCommentID:
+      name: parentCommentID
+      in: query
+      description: |
+        ID of the parent comment.
+      schema:
+        type: string
+      #readOnly: true
     requestedTenant:
       name: X-WSO2-Tenant
       in: header
