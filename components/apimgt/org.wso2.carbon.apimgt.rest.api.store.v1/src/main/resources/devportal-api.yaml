@@ -106,6 +106,9 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: v2
 servers:
+# Added by API Auto Mocking Plugin
+- description: SwaggerHub API Auto Mocking
+  url: https://virtserver.swaggerhub.com/NestedCommenting/DeveloperPortal/v2
 - url: https://apis.wso2.com/api/am/devportal/v2
 ######################################################
 # The "API Collection" resource APIs
@@ -4297,6 +4300,21 @@ components:
             $ref: '#/components/schemas/Rating'
         pagination:
           $ref: '#/components/schemas/Pagination'
+    CommentList:
+      title: Comments List
+      type: object
+      properties:
+        count:
+          type: integer
+          description: |
+            Number of Comments returned.
+          example: 1
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
     Comment:
       title: Comment
       required:
@@ -4335,21 +4353,6 @@ components:
           $ref: '#/components/schemas/CommenterInfo'
         replies:
           $ref: '#/components/schemas/CommentList'
-    CommentList:
-      title: Comments List
-      type: object
-      properties:
-        count:
-          type: integer
-          description: |
-            Number of Comments returned.
-          example: 1
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/Comment'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
     Error:
       title: Error object returned with 4XX HTTP status
       required:
@@ -5567,7 +5570,7 @@ components:
         ID of the perent comment.
       schema:
         type: string
-      readOnly: true
+      #readOnly: true
     requestedTenant:
       name: X-WSO2-Tenant
       in: header
