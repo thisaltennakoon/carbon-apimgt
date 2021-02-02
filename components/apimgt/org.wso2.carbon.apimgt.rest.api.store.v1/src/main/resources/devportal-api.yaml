@@ -874,6 +874,7 @@ paths:
       operationId: addCommentToAPI
       parameters:
       - $ref: '#/components/parameters/apiId'
+      - $ref: '#/components/parameters/parentCommentID'
       requestBody:
         description: |
           Comment object that should to be added
@@ -4202,8 +4203,25 @@ components:
           type: string
           readOnly: true
           example: admin
+        updatedTime:
+          type: string
+          readOnly: true
+        updatedBy:
+          type: string
+          readOnly: true
+          example: admin
+        category:
+          type: string
+        parentCommentId:
+          type: string
+        entryPoint:
+          type: string
         commenterInfo:
           $ref: '#/components/schemas/CommenterInfo'
+        replies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
     CommentList:
       title: Comments List
       type: object
@@ -5429,6 +5447,13 @@ components:
             moreInfo: ""
             error: []
   parameters:
+    parentCommentID:
+      name: parentCommentID
+      in: query
+      description: |
+        ID of the perent comment.
+      schema:
+        type: string
     requestedTenant:
       name: X-WSO2-Tenant
       in: header
