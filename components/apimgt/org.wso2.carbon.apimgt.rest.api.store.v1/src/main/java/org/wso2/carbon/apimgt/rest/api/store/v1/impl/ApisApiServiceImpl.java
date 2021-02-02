@@ -371,6 +371,10 @@ public class ApisApiServiceImpl implements ApisApiService {
         return null;
     }
 
+    public Response editComment(String commentId, String apiId, CommentDTO commentDTO, MessageContext messageContext) throws APIManagementException {
+        return null;
+    }
+
     @Override
     public Response apisApiIdDocumentsDocumentIdContentGet(String apiId, String documentId, String xWSO2Tenant,
             String ifNoneMatch, MessageContext messageContext) {
