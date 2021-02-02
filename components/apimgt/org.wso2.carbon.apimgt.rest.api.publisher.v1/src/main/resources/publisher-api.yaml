@@ -110,6 +110,35 @@ security:
 - OAuth2Security:
   - apim:api_view
 paths:
+  /sample:
+    get:
+      tags:
+        - Sample
+      summary: |
+        Retrieve sample items
+      description: |
+        Retrieve sample items
+      responses:
+        200:
+          description: |
+            OK.
+            Sample Items returned.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Samples"
+      security:
+        - OAuth2Security:
+            - apim:api_view
+      x-code-samples:
+        - lang: Curl
+          source: 'curl -k -H "Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8"
+          "https://127.0.0.1:9443/api/am/publisher/v1/sample"'
+      x-examples:
+        $ref: docs/examples/apis/apis_get.yaml
+      operationId: getSamples
   ######################################################
   # The "API Collection" resource APIs
   ######################################################
@@ -6817,6 +6846,19 @@ paths:
 
 components:
   schemas:
+    Samples:
+      title: Sample Items
+      properties:
+        sample1:
+          type: string
+          description: |
+            Sample 1.
+          example: “sample 1”
+        sample2:
+          type: string
+          description: |
+            Sample 2.
+          example: “sample 2”
     APIList:
       title: API List
       type: object
