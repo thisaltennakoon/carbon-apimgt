@@ -70,7 +70,7 @@ public interface APIProvider extends APIManager {
      * @return Comments
      * @throws APIManagementException if failed to get comments for identifier
      */
-    Comment[] getComments(ApiTypeWrapper apiTypeWrapper, String parentCommentID) throws APIManagementException;
+    Comment[] getComments(ApiTypeWrapper apiTypeWrapper, String parentCommentID, Integer replyLimit, Integer replyOffset) throws APIManagementException;
 
     /**
      * @param apiTypeWrapper Api Type Wrapper

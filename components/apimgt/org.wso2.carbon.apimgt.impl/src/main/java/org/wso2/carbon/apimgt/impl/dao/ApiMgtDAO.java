@@ -7715,7 +7715,7 @@ public class ApiMgtDAO {
      * @return Comment Array
      * @throws APIManagementException
      */
-    public Comment getComment(ApiTypeWrapper apiTypeWrapper, String commentId, Integer limit, Integer offset) throws
+    public Comment getComment(ApiTypeWrapper apiTypeWrapper, String commentId, Integer replyLimit, Integer replyOffset) throws
             APIManagementException {
 
         Identifier identifier;
@@ -7755,7 +7755,7 @@ public class ApiMgtDAO {
                         comment.setParentCommentID(resultSet.getString("PARENT_COMMENT_ID"));
                         comment.setEntryPoint(resultSet.getString("ENTRY_POINT"));
                         comment.setCategory(resultSet.getString("CATEGORY"));
-                        comment.setReplies(Arrays.asList(getComments(apiTypeWrapper, commentId)));
+                        comment.setReplies(Arrays.asList(getComments(apiTypeWrapper, commentId, replyLimit, replyOffset)));
                         return comment;
                     }
                 }
@@ -7775,7 +7775,7 @@ public class ApiMgtDAO {
      * @return Comment Array
      * @throws APIManagementException
      */
-    public Comment[] getComments(ApiTypeWrapper apiTypeWrapper, String parentCommentID) throws APIManagementException {
+    public Comment[] getComments(ApiTypeWrapper apiTypeWrapper, String parentCommentID, Integer replyLimit, Integer replyOffset) throws APIManagementException {
         Comment[] commentList = null;
         try (Connection connection = APIMgtDBUtil.getConnection()){
             int id = -1;
@@ -7790,7 +7790,7 @@ public class ApiMgtDAO {
                 String msg = "Could not load API record for: " + identifier.getName();
                 throw new APIManagementException(msg);
             }
-            commentList = getComments( identifier,  parentCommentID,  connection);
+            commentList = getComments( identifier,  parentCommentID, replyLimit, replyOffset, connection);
         } catch (SQLException e) {
             handleException("Failed to retrieve comments for  " + apiTypeWrapper.getName(), e);
         }
@@ -7805,7 +7805,7 @@ public class ApiMgtDAO {
      * @return Comment Array
      * @throws APIManagementException
      */
-    private Comment[] getComments(Identifier identifier, String parentCommentID, Connection connection) throws
+    private Comment[] getComments(Identifier identifier, String parentCommentID, Integer replyLimit, Integer replyOffset, Connection connection) throws
             APIManagementException {
 
         List<Comment> commentList = new ArrayList<Comment>();
@@ -7821,7 +7821,13 @@ public class ApiMgtDAO {
             prepStmt.setString(3, identifier.getVersion());
             if (parentCommentID != null){
                 prepStmt.setString(4, parentCommentID);
+                prepStmt.setInt(5, replyLimit);
+                prepStmt.setInt(6, replyOffset);
+            } else{
+                prepStmt.setInt(4, replyLimit);
+                prepStmt.setInt(5, replyOffset);
             }
+
             try (ResultSet resultSet = prepStmt.executeQuery()){
                 while (resultSet.next()) {
                     Comment comment = new Comment();
@@ -7834,7 +7840,7 @@ public class ApiMgtDAO {
                     comment.setParentCommentID(resultSet.getString("PARENT_COMMENT_ID"));
                     comment.setEntryPoint(resultSet.getString("ENTRY_POINT"));
                     comment.setCategory(resultSet.getString("CATEGORY"));
-                    comment.setReplies(Arrays.asList(getComments(identifier, resultSet.getString("COMMENT_ID"),
+                    comment.setReplies(Arrays.asList(getComments(identifier, resultSet.getString("COMMENT_ID"), 3, 0,
                             connection)));
                     commentList.add(comment);
                 }

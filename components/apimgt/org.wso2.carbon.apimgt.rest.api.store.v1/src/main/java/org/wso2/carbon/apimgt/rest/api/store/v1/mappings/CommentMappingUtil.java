@@ -61,7 +61,7 @@ public class CommentMappingUtil {
             commentDTO.setEntryPoint(CommentDTO.EntryPointEnum.PUBLISHER);
         }
         commentDTO.setReplies(fromCommentListToDTO(comment.getReplies().toArray(
-                new Comment[comment.getReplies().size()]), 30, 0, false));
+                new Comment[comment.getReplies().size()]), false));
         return commentDTO;
     }
 
@@ -116,30 +116,26 @@ public class CommentMappingUtil {
         comment.setApiId(apiId);
         return comment;
     }
+
     /**
      * Wraps a List of Comments to a CommentListDTO
      *
      * @param commentList list of comments
-     * @param limit       maximum comments to return
-     * @param offset      starting position of the pagination
      * @return CommentListDTO
      */
-    public static CommentListDTO fromCommentListToDTO(Comment[] commentList, int limit, int offset,
-                                                      boolean includeCommenterInfo) {
+    public static CommentListDTO fromCommentListToDTO(Comment[] commentList, boolean includeCommenterInfo) {
         CommentListDTO commentListDTO = new CommentListDTO();
         List<CommentDTO> listOfCommentDTOs = new ArrayList<>();
         commentListDTO.setCount(commentList.length);
 
-        int start = offset < commentList.length && offset >= 0 ? offset : Integer.MAX_VALUE;
-        int end = offset + limit - 1 <= commentList.length - 1 ? offset + limit - 1 : commentList.length - 1;
         Map<String, Map<String, String>> userClaimsMap = new HashMap<>();
-        for (int i = start; i <= end; i++) {
+        for (Comment comment:commentList) {
             try {
                 if (includeCommenterInfo) {
-                    userClaimsMap = retrieveUserClaims(commentList[i].getUser(), userClaimsMap);
-                    listOfCommentDTOs.add(fromCommentToDTOWithUserInfo(commentList[i], userClaimsMap));
+                    userClaimsMap = retrieveUserClaims(comment.getUser(), userClaimsMap);
+                    listOfCommentDTOs.add(fromCommentToDTOWithUserInfo(comment, userClaimsMap));
                 } else {
-                    listOfCommentDTOs.add(fromCommentToDTO(commentList[i]));
+                    listOfCommentDTOs.add(fromCommentToDTO(comment));
                 }
             } catch (APIManagementException e) {
                 log.error("Error while creating comments list", e);
@@ -148,5 +144,5 @@ public class CommentMappingUtil {
         commentListDTO.setList(listOfCommentDTOs);
         return commentListDTO;
     }
-
 }
+

@@ -290,9 +290,8 @@ public class ApisApiServiceImpl implements ApisApiService {
             APIProvider apiProvider = RestApiCommonUtil.getLoggedInUserProvider();
             ApiTypeWrapper apiTypeWrapper = apiProvider.getAPIorAPIProductByUUID(apiId, requestedTenantDomain);
             String parentCommentID = null;
-            Comment[] comments = apiProvider.getComments(apiTypeWrapper, parentCommentID);
-            CommentListDTO commentDTO = CommentMappingUtil.fromCommentListToDTO(comments, limit, offset,
-                    includeCommenterInfo);
+            Comment[] comments = apiProvider.getComments(apiTypeWrapper, parentCommentID, limit, offset);
+            CommentListDTO commentDTO = CommentMappingUtil.fromCommentListToDTO(comments, includeCommenterInfo);
 
             String uriString = RestApiConstants.RESOURCE_PATH_APIS + "/" + apiId +
                     RestApiConstants.RESOURCE_PATH_COMMENTS;
@@ -363,9 +362,8 @@ public class ApisApiServiceImpl implements ApisApiService {
         try {
             APIProvider apiProvider = RestApiCommonUtil.getLoggedInUserProvider();
             ApiTypeWrapper apiTypeWrapper = apiProvider.getAPIorAPIProductByUUID(apiId, requestedTenantDomain);
-            Comment[] comments = apiProvider.getComments(apiTypeWrapper, commentId);
-            CommentListDTO commentDTO = CommentMappingUtil.fromCommentListToDTO(comments, limit, offset,
-                    includeCommenterInfo);
+            Comment[] comments = apiProvider.getComments(apiTypeWrapper, commentId, limit, offset);
+            CommentListDTO commentDTO = CommentMappingUtil.fromCommentListToDTO(comments, includeCommenterInfo);
 
             String uriString = RestApiConstants.RESOURCE_PATH_APIS + "/" + apiId +
                     RestApiConstants.RESOURCE_PATH_COMMENTS;

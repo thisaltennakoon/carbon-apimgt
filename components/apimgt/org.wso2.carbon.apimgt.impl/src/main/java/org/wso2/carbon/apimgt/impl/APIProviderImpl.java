@@ -9249,9 +9249,9 @@ class APIProviderImpl extends AbstractAPIManager implements APIProvider {
     }
 
     @Override
-    public org.wso2.carbon.apimgt.api.model.Comment[] getComments(ApiTypeWrapper apiTypeWrapper, String parentCommentID)
+    public org.wso2.carbon.apimgt.api.model.Comment[] getComments(ApiTypeWrapper apiTypeWrapper, String parentCommentID, Integer replyLimit, Integer replyOffset)
             throws APIManagementException {
-        return apiMgtDAO.getComments(apiTypeWrapper, parentCommentID);
+        return apiMgtDAO.getComments(apiTypeWrapper, parentCommentID, replyLimit , replyOffset);
     }
 
     @Override
