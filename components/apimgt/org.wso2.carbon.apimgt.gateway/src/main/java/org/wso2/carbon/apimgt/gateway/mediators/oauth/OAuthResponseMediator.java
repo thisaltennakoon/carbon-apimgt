@@ -36,6 +36,8 @@ import org.wso2.carbon.apimgt.gateway.mediators.oauth.client.TokenResponse;
 import org.wso2.carbon.apimgt.gateway.mediators.oauth.conf.OAuthEndpoint;
 import org.wso2.carbon.apimgt.gateway.utils.redis.RedisCacheUtils;
 
+import java.util.Map;
+
 /**
  * OAuthResponseMediator to handle error responses from OAuth 2.0 protected backends
  */
@@ -70,7 +72,15 @@ public class OAuthResponseMediator extends AbstractMediator implements ManagedLi
                             TokenCache.getInstance().getTokenMap().put(oAuthEndpoint.getId(), null);
                         }
 
-                        OAuthTokenGenerator.generateToken(oAuthEndpoint, null);
+                        TokenResponse tokenResponse = OAuthTokenGenerator.generateToken(oAuthEndpoint, null);
+                        boolean someFlag = true; // Tentative. flag to retry the request. Should be set based on the deployment.toml
+                        if (someFlag) {
+                            // Add the newly generated access token to the transport headers to retry the request
+                            Map<String, Object> transportHeaders = (Map<String, Object>) ((Axis2MessageContext) messageContext)
+                                    .getAxis2MessageContext().getProperty("TRANSPORT_HEADERS");
+                            transportHeaders.put("Authorization", "Bearer " + tokenResponse.getAccessToken());
+                            return false;
+                        }
                         log.error("OAuth 2.0 access token has been rejected by the backend...");
                         handleFailure(APISecurityConstants.OAUTH_TEMPORARY_SERVER_ERROR, messageContext,
                                 APISecurityConstants.OAUTH_TEMPORARY_SERVER_ERROR_MESSAGE, "Please try again");
