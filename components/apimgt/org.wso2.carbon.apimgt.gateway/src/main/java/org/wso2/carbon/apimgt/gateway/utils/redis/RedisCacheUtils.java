@@ -29,6 +29,7 @@ import redis.clients.jedis.JedisPool;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Utility class singleton to connect to Redis Server, and perform general operations
@@ -200,6 +201,18 @@ public class RedisCacheUtils {
             } else {
                 return null;
             }
+        }
+    }
+
+    /**
+     * Retrieves a set of keys from Redis that match the specified pattern.
+     *
+     * @param pattern the pattern to match keys (e.g., "oauth_*" to match all keys starting with "oauth_")
+     * @return a set of matching keys from Redis, or an empty set if no keys match
+     */
+    public Set<String> getKeys(String pattern) {
+        try (Jedis jedis = jedisPool.getResource()) {
+            return jedis.keys(pattern);
         }
     }
 

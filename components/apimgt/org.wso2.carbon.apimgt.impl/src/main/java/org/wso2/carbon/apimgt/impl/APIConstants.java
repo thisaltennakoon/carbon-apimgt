@@ -1452,6 +1452,14 @@ public final class APIConstants {
         public static final String TOKEN_TYPE = "token_type";
         public static final String EXPIRES_IN = "expires_in";
         public static final String EXPIRES_IN_CONFIG = "ExpiresIn";
+        public static final String ENABLE_RETRY_CALL_WITH_NEW_TOKEN = "EnableRetryCallWithNewToken";
+        public static final String CONNECTION_TIMEOUT = "connection_timeout";
+        public static final String CONNECTION_REQUEST_TIMEOUT = "connection_request_timeout";
+        public static final String SOCKET_TIMEOUT = "socket_timeout";
+        public static final String ENDPOINT_CONNECTION_CONFIG = "endpoint_connection_config";
+        public static final String ENDPOINT_CONNECTION_TIMEOUT = "EndpointConnectionTimeout";
+        public static final String ENDPOINT_CONNECTION_REQUEST_TIMEOUT = "EndpointConnectionRequestTimeout";
+        public static final String ENDPOINT_SOCKET_TIMEOUT = "EndpointSocketTimeout";
 
         // Properties in Endpoint Config
         public static final String ENDPOINT_SECURITY_PRODUCTION = "production";
@@ -1784,6 +1792,8 @@ public final class APIConstants {
     public static final String ENDPOINT_SPECIFIC_CONFIG = "config";
     public static final String ENDPOINT_CONFIG_ACTION_DURATION = "actionDuration";
     public static final String ENDPOINT_TYPE_GRAPHQL = "graphql";
+    public static final String ENABLE_RETRY_CALL_WITH_NEW_TOKEN = "enable_retry_call_with_new_token";
+    public static final String IS_REDIS_ENABLED = "is_redis_enabled";
 
     public static final String API_ENDPOINT_CONFIG_TIMEOUT = "timeout";
     public static final String API_ENDPOINT_CONFIG_PROTOCOL_TYPE = "endpoint_type";

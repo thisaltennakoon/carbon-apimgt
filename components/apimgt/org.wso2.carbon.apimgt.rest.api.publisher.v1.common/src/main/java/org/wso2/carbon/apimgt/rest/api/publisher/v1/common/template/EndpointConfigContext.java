@@ -24,6 +24,9 @@ import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.api.model.API;
 import org.wso2.carbon.apimgt.api.model.APIProduct;
 import org.wso2.carbon.apimgt.impl.APIConstants;
+import org.wso2.carbon.apimgt.impl.APIManagerConfiguration;
+import org.wso2.carbon.apimgt.impl.dto.RedisConfig;
+import org.wso2.carbon.apimgt.impl.internal.ServiceReferenceHolder;
 import org.wso2.carbon.apimgt.impl.template.APITemplateException;
 import org.wso2.carbon.apimgt.impl.utils.GatewayUtils;
 
@@ -63,6 +66,7 @@ public class EndpointConfigContext extends ConfigContextDecorator {
                         equals(epConfig.get(APIConstants.API_ENDPOINT_CONFIG_PROTOCOL_TYPE))) {
                     processLambdaConfig(api, epConfig);
                 }
+                processRetryCallWithNewTokenConfig(epConfig);
                 this.endpointConfig = epConfig;
             } catch (ParseException e) {
                 this.handleException("Unable to pass the endpoint JSON config");
@@ -121,4 +125,31 @@ public class EndpointConfigContext extends ConfigContextDecorator {
         return awsConfig;
     }
 
+    private void processRetryCallWithNewTokenConfig(JSONObject epConfig) {
+        APIManagerConfiguration apimConfig = ServiceReferenceHolder.getInstance().getAPIManagerConfigurationService().
+                getAPIManagerConfiguration();
+
+        boolean isRetryCallWithNewTokenEnabled = Boolean.parseBoolean(apimConfig.getFirstProperty(APIConstants.
+                OAUTH_CONFIGS + APIConstants.OAuthConstants.ENABLE_RETRY_CALL_WITH_NEW_TOKEN));
+        if (isRetryCallWithNewTokenEnabled) {
+            epConfig.put(APIConstants.ENABLE_RETRY_CALL_WITH_NEW_TOKEN, true);
+
+            RedisConfig redisConfigProperties = apimConfig.getRedisConfig();
+            if (redisConfigProperties != null && redisConfigProperties.isRedisEnabled()) {
+                epConfig.put(APIConstants.IS_REDIS_ENABLED, true);
+            }
+
+            JSONObject endpointConnectionConfig = new JSONObject();
+            endpointConnectionConfig.put(APIConstants.OAuthConstants.CONNECTION_TIMEOUT, Integer.valueOf(
+                    apimConfig.getFirstProperty(APIConstants.OAUTH_CONFIGS + APIConstants.OAuthConstants.
+                            ENDPOINT_CONNECTION_TIMEOUT)));
+            endpointConnectionConfig.put(APIConstants.OAuthConstants.CONNECTION_REQUEST_TIMEOUT, Integer.valueOf(
+                    apimConfig.getFirstProperty(APIConstants.OAUTH_CONFIGS + APIConstants.OAuthConstants.
+                            ENDPOINT_CONNECTION_REQUEST_TIMEOUT)));
+            endpointConnectionConfig.put(APIConstants.OAuthConstants.SOCKET_TIMEOUT, Integer.valueOf(
+                    apimConfig.getFirstProperty(APIConstants.OAUTH_CONFIGS + APIConstants.OAuthConstants.
+                            ENDPOINT_SOCKET_TIMEOUT)));
+            epConfig.put(APIConstants.OAuthConstants.ENDPOINT_CONNECTION_CONFIG, endpointConnectionConfig);
+        }
+    }
 }
