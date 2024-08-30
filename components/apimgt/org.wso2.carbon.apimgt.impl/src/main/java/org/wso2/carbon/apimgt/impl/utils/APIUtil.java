@@ -5378,6 +5378,7 @@ public final class APIUtil {
         return CommonAPIUtil.getHttpClient(protocol, configuration);
     }
 
+
     /**
      * This method will return a relative URL for given registry resource which we can used to retrieve the resource
      * from the web UI. For example, URI for a thumbnail icon of a tag can be generated from this method.

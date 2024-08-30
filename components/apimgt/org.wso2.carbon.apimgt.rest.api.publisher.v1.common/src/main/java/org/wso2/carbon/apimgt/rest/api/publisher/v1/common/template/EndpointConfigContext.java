@@ -120,4 +120,5 @@ public class EndpointConfigContext extends ConfigContextDecorator {
         awsConfig.put("awsAlias", awsAlias);
         return awsConfig;
     }
+
 }

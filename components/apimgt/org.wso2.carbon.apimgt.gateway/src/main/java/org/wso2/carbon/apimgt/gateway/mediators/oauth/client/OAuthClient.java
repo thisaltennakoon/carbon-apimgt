@@ -29,12 +29,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.wso2.carbon.apimgt.api.APIManagementException;
-import org.wso2.carbon.apimgt.gateway.internal.ServiceReferenceHolder;
 import org.wso2.carbon.apimgt.impl.APIConstants;
-import org.wso2.carbon.apimgt.impl.APIManagerConfiguration;
 import org.wso2.carbon.apimgt.impl.utils.APIUtil;
-import java.net.SocketTimeoutException;
-import org.apache.http.conn.ConnectTimeoutException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -81,7 +77,7 @@ public class OAuthClient {
         urlObject = new URL(url);
         StringBuilder payload = new StringBuilder();
         try (CloseableHttpClient httpClient = (CloseableHttpClient) APIUtil
-                .getHttpClient(urlObject.getProtocol())) {
+                .getHttpClient(urlObject.getPort(), urlObject.getProtocol())) {
             HttpPost httpPost = new HttpPost(url);
             // Set authorization header
             httpPost.setHeader(APIConstants.OAuthConstants.AUTHORIZATION_HEADER, "Basic " + credentials);

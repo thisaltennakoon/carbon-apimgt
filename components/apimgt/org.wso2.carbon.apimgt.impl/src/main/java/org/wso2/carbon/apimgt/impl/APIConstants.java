@@ -1453,9 +1453,6 @@ public final class APIConstants {
         public static final String EXPIRES_IN = "expires_in";
         public static final String EXPIRES_IN_CONFIG = "ExpiresIn";
         public static final String ENABLE_RETRY_CALL_WITH_NEW_TOKEN = "EnableRetryCallWithNewToken";
-        public static final String ENDPOINT_CONNECTION_TIMEOUT = "EndpointConnectionTimeout";
-        public static final String ENDPOINT_CONNECTION_REQUEST_TIMEOUT = "EndpointConnectionRequestTimeout";
-        public static final String ENDPOINT_SOCKET_TIMEOUT = "EndpointSocketTimeout";
 
         // Properties in Endpoint Config
         public static final String ENDPOINT_SECURITY_PRODUCTION = "production";
