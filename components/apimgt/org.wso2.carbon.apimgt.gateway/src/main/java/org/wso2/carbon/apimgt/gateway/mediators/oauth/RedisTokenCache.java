@@ -18,7 +18,7 @@
 
 package org.wso2.carbon.apimgt.gateway.mediators.oauth;
 
-import org.apache.synapse.endpoints.auth.oauth.TokenCache;
+import org.apache.synapse.endpoints.auth.oauth.TokenCacheProvider;
 import org.wso2.carbon.apimgt.gateway.internal.ServiceReferenceHolder;
 import org.wso2.carbon.apimgt.gateway.utils.redis.RedisCacheUtils;
 
@@ -28,11 +28,11 @@ import java.util.Set;
  * A singleton class implementing TokenCacheInterface for caching OAuth tokens using Redis.
  * The class allows storing, retrieving, and removing tokens from Redis via RedisCacheUtils.
  */
-public class RedisTokenCache implements TokenCache {
+public class RedisTokenCache implements TokenCacheProvider {
 
     // Singleton instance of RedisTokenCache
-    private static RedisTokenCache instance = null;
-    private RedisCacheUtils redisCacheUtils;
+    private static final RedisTokenCache instance = new RedisTokenCache();
+    private final RedisCacheUtils redisCacheUtils;
 
     private RedisTokenCache() {
         redisCacheUtils = new RedisCacheUtils(ServiceReferenceHolder.getInstance().getRedisPool());
@@ -45,9 +45,6 @@ public class RedisTokenCache implements TokenCache {
      * @return the singleton instance of RedisTokenCache
      */
     public static RedisTokenCache getInstance() {
-        if (instance == null) {
-            instance = new RedisTokenCache();
-        }
         return instance;
     }
 

@@ -5378,16 +5378,6 @@ public final class APIUtil {
         return CommonAPIUtil.getHttpClient(protocol, configuration);
     }
 
-    public static HttpClient getHttpClient(String protocol, int connectionTimeout, int connectionRequestTimeout,
-                                           int socketTimeout) {
-
-        HttpClientConfigurationDTO configuration = ServiceReferenceHolder.getInstance().
-                getAPIManagerConfigurationService().getAPIManagerConfiguration().getHttpClientConfiguration();
-        return CommonAPIUtil.getHttpClient(protocol, configuration, connectionTimeout, connectionRequestTimeout,
-                socketTimeout);
-    }
-
-
     /**
      * This method will return a relative URL for given registry resource which we can used to retrieve the resource
      * from the web UI. For example, URI for a thumbnail icon of a tag can be generated from this method.

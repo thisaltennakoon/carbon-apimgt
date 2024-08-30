@@ -44,7 +44,7 @@ public class TemplateUtilContext extends ConfigContextDecorator {
         return StringEscapeUtils.escapeXml(StringEscapeUtils.unescapeXml(url)).trim();
     }
 
-    public Map jsonToMap(String jsonString) {
+    public Map jsonStringToMap(String jsonString) {
         return new Gson().fromJson(jsonString, Map.class);
     }
 }

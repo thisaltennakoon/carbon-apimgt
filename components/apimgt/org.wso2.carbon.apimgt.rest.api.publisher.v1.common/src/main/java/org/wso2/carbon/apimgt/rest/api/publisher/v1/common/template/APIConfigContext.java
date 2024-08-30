@@ -21,6 +21,7 @@ import org.wso2.carbon.apimgt.api.model.API;
 import org.wso2.carbon.apimgt.api.model.APIProduct;
 import org.wso2.carbon.apimgt.api.model.APIProductIdentifier;
 import org.wso2.carbon.apimgt.impl.APIConstants;
+import org.wso2.carbon.apimgt.impl.internal.ServiceReferenceHolder;
 import org.wso2.carbon.apimgt.impl.template.APITemplateException;
 
 /**
@@ -98,6 +99,9 @@ public class APIConfigContext extends ConfigContext {
         }
         // API test key
         context.put("testKey", api.getTestKey());
+
+        // Set the enable retry call with new Oauth token property
+        context.put(APIConstants.ENABLE_RETRY_CALL_WITH_NEW_OAUTH_TOKEN, isRetryWithNewOAuthTokenEnabled());
     }
 
     private void setApiProductVelocityContext(APIProduct apiProduct, VelocityContext context) {
@@ -134,9 +138,19 @@ public class APIConfigContext extends ConfigContext {
         }
         // API test key
         context.put("testKey", apiProduct.getTestKey());
+
+        // Set the enable retry call with new Oauth token property
+        context.put(APIConstants.ENABLE_RETRY_CALL_WITH_NEW_OAUTH_TOKEN, isRetryWithNewOAuthTokenEnabled());
     }
 
     public String getAPIName(API api) {
         return api.getId().getApiName();
+    }
+
+    private boolean isRetryWithNewOAuthTokenEnabled() {
+        String property = ServiceReferenceHolder.getInstance().getAPIManagerConfigurationService().
+                getAPIManagerConfiguration().getFirstProperty(APIConstants.OAUTH_CONFIGS + APIConstants.
+                        OAuthConstants.ENABLE_RETRY_CALL_WITH_NEW_TOKEN);
+        return Boolean.parseBoolean(property);
     }
 }

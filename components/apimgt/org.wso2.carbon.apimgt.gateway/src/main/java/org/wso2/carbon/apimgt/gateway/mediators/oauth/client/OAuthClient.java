@@ -75,21 +75,13 @@ public class OAuthClient {
             log.debug("Initializing token generation request: [token-endpoint] " + url);
         }
 
-        APIManagerConfiguration apimConfig = ServiceReferenceHolder.getInstance().getAPIManagerConfiguration();
-        int connectionTimeout = Integer.parseInt(apimConfig.getFirstProperty(APIConstants.OAUTH_CONFIGS +
-                APIConstants.OAuthConstants.ENDPOINT_CONNECTION_TIMEOUT));
-        int connectionRequestTimeout = Integer.parseInt(apimConfig.getFirstProperty(APIConstants.OAUTH_CONFIGS +
-                APIConstants.OAuthConstants.ENDPOINT_CONNECTION_REQUEST_TIMEOUT));
-        int socketTimeout = Integer.parseInt(apimConfig.getFirstProperty(APIConstants.OAUTH_CONFIGS +
-                APIConstants.OAuthConstants.ENDPOINT_SOCKET_TIMEOUT));
-
         URL urlObject;
         String credentials = Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
 
         urlObject = new URL(url);
         StringBuilder payload = new StringBuilder();
         try (CloseableHttpClient httpClient = (CloseableHttpClient) APIUtil
-                .getHttpClient(urlObject.getProtocol(), connectionTimeout, connectionRequestTimeout, socketTimeout)) {
+                .getHttpClient(urlObject.getProtocol())) {
             HttpPost httpPost = new HttpPost(url);
             // Set authorization header
             httpPost.setHeader(APIConstants.OAuthConstants.AUTHORIZATION_HEADER, "Basic " + credentials);
@@ -122,8 +114,6 @@ public class OAuthClient {
             } finally {
                 httpPost.releaseConnection();
             }
-        } catch (ConnectTimeoutException | SocketTimeoutException e) {
-            throw new APIManagementException("Token generation failed due to a connection timeout.", e);
         }
     }
 

@@ -488,12 +488,8 @@
         <EnableJWTForPortals>{{apim.oauth_config.enable_jwt_for_portals}}</EnableJWTForPortals>
         {% endif %}
 
+        <!-- Enable/Disable retry API calls with new access token when the access token is invalid. Default is false. -->
         <EnableRetryCallWithNewToken>{{apim.oauth_config.enable_retry_call_with_new_token}}</EnableRetryCallWithNewToken>
-
-        <!-- These parameters are used to configure timeout values for the API calls make to the token endpoint -->
-        <EndpointConnectionTimeout>{{apim.oauth_config.token_endpoint.connection_timeout}}</EndpointConnectionTimeout>
-        <EndpointConnectionRequestTimeout>{{apim.oauth_config.token_endpoint.connection_request_timeout}}</EndpointConnectionRequestTimeout>
-        <EndpointSocketTimeout>{{apim.oauth_config.token_endpoint.socket_timeout}}</EndpointSocketTimeout>
     </OAuthConfigurations>
 
     <AccessTokenBinding>
